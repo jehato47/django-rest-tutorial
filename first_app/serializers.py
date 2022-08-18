@@ -5,4 +5,4 @@ from .models import Country
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ["name", "note", "date"]
+        fields = ["id", "name", "note", "date"]
