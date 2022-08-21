@@ -87,7 +87,7 @@ def country_detail(request, pk):
     try:
         country = Country.objects.get(pk=pk)
     except Country.DoesNotExist:
-        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
         serializer = CountrySerializer(country)
@@ -105,4 +105,4 @@ def country_detail(request, pk):
 
     elif request.method == "DELETE":
         country.delete()
-        return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
