@@ -10,6 +10,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
+from rest_framework.decorators import authentication_classes, permission_classes
+from django_course_youtube.permission import HasAInUsername
 
 
 # Create your views here.
@@ -18,6 +24,9 @@ class GenericApiView(
     generics.GenericAPIView, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
     mixins.UpdateModelMixin, mixins.DestroyModelMixin,
 ):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated, HasAInUsername]
+
     serializer_class = CountrySerializer
     queryset = Country.objects.all()
     lookup_field = "pk"
@@ -83,3 +92,28 @@ class CountryDetailView(APIView):
 
         country.delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET", "POST"])
+def login(request):
+    data = request.data
+
+    auth = authenticate(username=data["username"], password=data["password"])
+
+    if auth:
+        token = Token.objects.filter(user=auth).first()
+
+        if not token:
+            token = Token.objects.create(user=auth)
+
+        return Response({"success": True, "token": token.key})
+
+    return Response({"success": False, "message": "Username or Password is incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["DELETE"])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    Token.objects.filter(user=request.user).delete()
+    return Response(True)
