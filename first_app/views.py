@@ -24,17 +24,14 @@ class GenericApiView(
     generics.GenericAPIView, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
     mixins.UpdateModelMixin, mixins.DestroyModelMixin,
 ):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated, HasAInUsername]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated, HasAInUsername]
 
     serializer_class = CountrySerializer
     queryset = Country.objects.all()
     lookup_field = "pk"
 
     def get(self, request, pk=None):
-        if pk:
-            return self.retrieve(request)
-
         return self.list(request)
 
     def post(self, request):
