@@ -2,7 +2,7 @@
 
 This repository contains code for a basic Django Rest Framework project.
 
-[Youtube Link](https://www.youtube.com/watch?v=ygw08d3H9gI&list=PLwjQ5gMPDTTBIA8xw3JV-C82BrVMQu6Gu)
+[Youtube Link](https://www.youtube.com/watch?v=ygw08d3H9gI&list=PLwjQ5gMPDTTBIA8xw3JV-C82BrVMQu6Gu)  🎥🔴
 
 ## Getting Started 🚀
 
